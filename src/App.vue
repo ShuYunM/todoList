@@ -60,7 +60,9 @@ export default {
         item.done = done;
       });
     },
+    // 所有清除选中数据
     clearAllTodo() {
+      // 返回所有为false(未选中)的数据
       this.todos = this.todos.filter((item) => !item.done);
     },
   },

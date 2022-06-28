@@ -3,11 +3,16 @@
   <div class="todo-footer" v-show="total">
     <label>
       <!-- <input type="checkbox" :checked="isAll" @change="checkAll" /> -->
+      <!--
+         读取时：通过对数组长度和已完成的状态做出判断，来决定是否勾选当前总的复选框
+         修改时：v-model 当内容修改时调用计算属性，通过函数遍历所有数据让其checked(todos.done)的状态等于当前按钮的状态 
+      -->
       <input type="checkbox" v-model="isAll" />
     </label>
     <span>
       <span>已完成{{ todoTotal }}</span> / 全部 {{ total }}
     </span>
+
     <button class="btn btn-danger" @click="clearAllTodo">清除已完成任务</button>
   </div>
 </template>
@@ -17,6 +22,7 @@ export default {
   name: "MyFooter",
   props: ["todos", "checkAllTodo", "clearAllTodo"],
   methods: {
+    // 通过点击得到按钮当前的状态，调用函数返回给父组件，父组件遍历
     // checkAll(e) {
     //   this.checkAllTodo(e.target.checked);
     // },
@@ -29,7 +35,7 @@ export default {
     total() {
       return this.todos.length;
     },
-    // 读取已完成的任务
+    // 对已完成的做判断，判断为done为true的个数
     todoTotal() {
       // 方法一：
       // return this.todos.filter((item) => item.done === true).length;
