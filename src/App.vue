@@ -3,16 +3,12 @@
   <div id="root">
     <div class="todo-container">
       <div class="todo-wrap">
-        <MyHeader :addTodo="addTodo"></MyHeader>
-        <MyList
-          :todos="todos"
-          :checkTodo="checkTodo"
-          :deleteTodo="deleteTodo"
-        ></MyList>
+        <MyHeader @addTodo="addTodo"></MyHeader>
+        <MyList :todos="todos"></MyList>
         <MyFooter
           :todos="todos"
-          :checkAllTodo="checkAllTodo"
-          :clearAllTodo="clearAllTodo"
+          @checkedAll="checkAllTodo"
+          @clearAllTodo="clearAllTodo"
         ></MyFooter>
       </div>
     </div>
@@ -72,6 +68,13 @@ export default {
         localStorage.setItem("todos", JSON.stringify(value));
       },
     },
+  },
+  mounted() {
+    this.$bus.$on("checkTodo", this.checkTodo);
+    this.$bus.$on("deleteTodo", this.deleteTodo);
+  },
+  beforeDestroy() {
+    this.$bus.$off("checkTodo", "deleteTodo");
   },
   components: {
     MyHeader,

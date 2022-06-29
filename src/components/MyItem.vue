@@ -23,16 +23,16 @@
 <script>
 export default {
   name: "MyItem",
-  props: ["todo", "checkTodo", "deleteTodo"],
+  props: ["todo"],
   methods: {
     // 勾选
     handleCheck(id) {
-      this.checkTodo(id);
+      this.$bus.$emit("checkTodo", id);
     },
     // 删除
     handleDelete(id) {
       if (confirm("确定删除吗")) {
-        this.deleteTodo(id);
+        this.$bus.$emit("deleteTodo", id);
       }
     },
   },

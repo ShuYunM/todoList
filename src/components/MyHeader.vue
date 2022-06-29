@@ -29,11 +29,10 @@ export default {
       // 获取用户的输入，包装为todo对象
       console.log(e.target.value);
       const tood = { id: nanoid(), title: this.title, done: false };
-      this.addTodo(tood);
+      this.$emit("addTodo", tood);
       this.title = "";
     },
   },
-  props: ["addTodo"],
 };
 </script>
 

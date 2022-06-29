@@ -13,21 +13,21 @@
       <span>已完成{{ todoTotal }}</span> / 全部 {{ total }}
     </span>
 
-    <button class="btn btn-danger" @click="clearAllTodo">清除已完成任务</button>
+    <button class="btn btn-danger" @click="clearAll">清除已完成任务</button>
   </div>
 </template>
 
 <script>
 export default {
   name: "MyFooter",
-  props: ["todos", "checkAllTodo", "clearAllTodo"],
+  props: ["todos"],
   methods: {
     // 通过点击得到按钮当前的状态，调用函数返回给父组件，父组件遍历
     // checkAll(e) {
     //   this.checkAllTodo(e.target.checked);
     // },
     clearAll() {
-      this.clearAllTodo();
+      this.$emit("clearAllTodo");
     },
   },
   computed: {
@@ -57,7 +57,7 @@ export default {
         return this.todoTotal === this.total && this.total > 0;
       },
       set(value) {
-        this.checkAllTodo(value);
+        this.$emit("checkAllTodo", value);
       },
     },
   },
