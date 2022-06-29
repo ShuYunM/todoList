@@ -4,7 +4,7 @@
     <label>
       <!-- <input type="checkbox" :checked="isAll" @change="checkAll" /> -->
       <!--
-         读取时：通过对数组长度和已完成的状态做出判断，来决定是否勾选当前总的复选框
+         读取时：通过对数组长度和已完成的状态做出判断(只要单个任务复选框发生变化就会读取)，来决定是否勾选当前总的复选框
          修改时：v-model 当内容修改时调用计算属性，通过函数遍历所有数据让其checked(todos.done)的状态等于当前按钮的状态 
       -->
       <input type="checkbox" v-model="isAll" />

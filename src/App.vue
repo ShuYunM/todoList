@@ -28,11 +28,8 @@ export default {
   name: "App",
   data() {
     return {
-      todos: [
-        { id: "0001", title: "吃饭", done: true },
-        { id: "0002", title: "喝水", done: false },
-        { id: "0003", title: "睡觉", done: true },
-      ],
+      // 判断本地存储中是否有内容，如果为空本地会返回一个null，这是我们添内容是做不到的，因为无法将对象放入null
+      todos: JSON.parse(localStorage.getItem("todos")) || [],
     };
   },
   methods: {
@@ -64,6 +61,16 @@ export default {
     clearAllTodo() {
       // 返回所有为false(未选中)的数据
       this.todos = this.todos.filter((item) => !item.done);
+    },
+  },
+  // 监视todos的变化，将最新的放入本地存储
+  watch: {
+    todos: {
+      // 开启深度检测用于点击按钮以后，刷新页面，按钮也是同步状态的
+      deep: true,
+      handler(value) {
+        localStorage.setItem("todos", JSON.stringify(value));
+      },
     },
   },
   components: {
