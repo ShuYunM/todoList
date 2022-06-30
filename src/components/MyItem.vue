@@ -7,14 +7,29 @@
         :checked="todo.done"
         @change="handleCheck(todo.id)"
       />
-      <span>{{ todo.title }}</span>
+      <span v-show="!todo.isEdit">{{ todo.title }}</span>
+      <input
+        v-show="todo.isEdit"
+        type="text"
+        :value="todo.title"
+        @blur="handleBlur(todo, $event)"
+        ref="Obtain"
+      />
     </label>
     <button
-      @click="handleDelete(todo.id)"
       class="btn btn-danger"
       style="display: none"
+      @click="handleDelete(todo.id)"
     >
       删除
+    </button>
+
+    <button
+      v-if="!todo.isEdit"
+      class="btn btn-danger"
+      @click="handleEdit(todo)"
+    >
+      编辑
     </button>
   </li>
 </template>
@@ -34,6 +49,34 @@ export default {
       if (confirm("确定删除吗")) {
         this.$bus.$emit("deleteTodo", id);
       }
+    },
+    // 编辑
+    handleEdit(todo) {
+      // 如果todo身上有isEdit就给他调成true，没有则创建
+
+      if (todo.isEdit in todo) {
+        todo.isEdit = true;
+      } else {
+        this.$set(todo, "isEdit", true);
+      }
+      //此处也可以使用updated
+      this.$nextTick(function () {
+        this.$refs.Obtain.focus();
+        this.$refs.Obtain.select();
+      });
+      // 效果一样但不建议使用
+      setTimeout(() => {
+        this.$refs.Obtain.focus();
+        this.$refs.Obtain.select();
+      });
+    },
+    // 离开表单
+    handleBlur(todo, e) {
+      todo.isEdit = false;
+      if (!e.target.value.trim()) {
+        return alert("输入不能为空");
+      }
+      this.$bus.$emit("updataTodo", todo.id, e.target.value);
     },
   },
 };
@@ -79,5 +122,9 @@ li:hover {
 }
 li:hover .btn {
   display: inline-block !important;
+}
+.btn-danger:last-child {
+  background-color: #a1564a;
+  margin-right: 5px;
 }
 </style>

@@ -38,6 +38,11 @@ export default {
         if (todo.id === id) todo.done = !todo.done;
       });
     },
+    updataTodo(id, title) {
+      this.todos.forEach((todo) => {
+        if (todo.id === id) todo.title = title;
+      });
+    },
     // 删除一个对应id
     deleteTodo(id) {
       // 方法一
@@ -72,9 +77,12 @@ export default {
   mounted() {
     this.$bus.$on("checkTodo", this.checkTodo);
     this.$bus.$on("deleteTodo", this.deleteTodo);
+    this.$bus.$on("updataTodo", this.updataTodo);
   },
   beforeDestroy() {
-    this.$bus.$off("checkTodo", "deleteTodo");
+    this.$bus.$off("checkTodo");
+    this.$bus.$off("deleteTodo");
+    this.$bus.$off("updataTodo");
   },
   components: {
     MyHeader,
